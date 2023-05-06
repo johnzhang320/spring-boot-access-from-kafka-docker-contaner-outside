@@ -9,3 +9,8 @@
  This project make the spring boot directly accesses kafka by PLAIN_TEXT and by TLS connection by Java keystore(jks)
  
  In order to make Kafka image of container is smaller or simple, I choose bitnami kafka and zookeeper image. 
+ 
+ # kafka plain text docker compose
+       
+ 
+ 
