@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  zookeeper-services:
+    image: docker.io/bitnami/zookeeper:3.8
+    container_name: zookeeper-container
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    networks:
+      - kafka-app-net
+  kafka-services:
+    image: docker.io/bitnami/kafka:3.4
+    container_name: kafka-container
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+      - "9095:9095"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_ENABLE_KRAFT=no
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper-services:2181
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL_LOCAL:PLAINTEXT,EXTERNAL_CLUSTER:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092,EXTERNAL_LOCAL://0.0.0.0:9094,EXTERNAL_CLUSTER://0.0.0.0:9095
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-services:9092,EXTERNAL_LOCAL://127.0.0.1:9094,EXTERNAL_CLUSTER://192.168.1.144:9095
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+    depends_on:
+      - zookeeper-services
+    networks:
+      - kafka-app-net
+
+networks:
+  kafka-app-net:
+    driver: bridge
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
