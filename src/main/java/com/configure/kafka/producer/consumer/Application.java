@@ -12,10 +12,14 @@ public class Application {
 	   http://localhost:8096/api/v1/kafka/publish
 
 	    {
-          "item": "Butter Chicken",
-          "deliveryType": "takeaway",
-          "quantity": 2
-        }
+           "itemName":"Philly Red Steak",
+           "quantity": 6,
+           "deliveryDriverName":"Bryan Hart",
+           "deliveryAddress": "1st Street suite 2213, San Jose,CA",
+           "customerName": "Harris Tarden",
+           "arriveInMinutes": 30,
+           "price":68.5
+         }
 
 	 */
 

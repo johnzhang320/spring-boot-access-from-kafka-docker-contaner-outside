@@ -8,8 +8,12 @@ import lombok.*;
 @Builder
 @ToString
 public class Order {
-    private String item;
-    private String deliveryType;
-
+    private String messageFrom;
+    private String itemName;
+    private String deliveryDriverName;
+    private String deliveryAddress;
+    private String customerName;
+    private Integer arriveInMinutes;
+    private Double price;
     private Integer quantity;
 }
