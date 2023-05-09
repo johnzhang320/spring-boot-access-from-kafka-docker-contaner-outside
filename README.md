@@ -1,16 +1,15 @@
  
 # Spring boot from outside access Kafka docker container
 
-# Overview
- The applications which publish or subscribe message outside from kafka container can be normal because regular application service could be running 
- in different servers from Kafka cluster brokers or individual kafka broker. Therefore it makes sense that an application accesses kafka bootstrap server
- from kafka container outside. 
- 
- This project make the spring boot directly accesses kafka by PLAIN_TEXT and by TLS connection by Java keystore(jks)
- 
- In order to make Kafka image of container is smaller or simple, I choose bitnami kafka and zookeeper image. 
- 
- # kafka plain text docker compose
+# Key Points
+ 1. Introduce external same host and external different host ways for spring boot application connect to kafka container
+ 2. External same host: in local machine, spring boot from outside of docker to connect kafka/zookeeper docker container
+ 3. External different host: we create AWS EC2 kafka/Zookeeper docker container, spring boot from my local machint to connect
+ 4. I choose bitnami kafka and zookeeper image because the sizes are small enough to run in EC2 t2.small (t2.micro is not enough)
+# Work flow chart
+ <img src="images/external-same-host.png" width="60%" height="60%">
+ <img src="images/external-different-host-ec2-server.png" width="60%" height="60%">
+# kafka plain text docker compose
    Samilar to environment confluent kafka parameters, bitnami image has different parts which add 'CFG' for Kafka environment variable
    Here are key env properties, first of all we can select our external and internal key words 
    
