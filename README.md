@@ -28,6 +28,8 @@
      sudo yum install docker
      sudo systemctl enable docker.service
      sudo systemctl start docker.service
+     
+     
 
 ## Configure EC2 instance VPC
   
@@ -39,6 +41,8 @@
    
 
   <img src="images/instanace-vpc-configuration.png" width="60%" height="60%">
+  
+  
  
   
  
