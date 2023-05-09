@@ -25,9 +25,9 @@
  
  SSH Login in your EC2 instance --> run following command
  
-sudo yum install docker
-sudo systemctl enable docker.service
-sudo systemctl start docker.service
+     sudo yum install docker
+     sudo systemctl enable docker.service
+     sudo systemctl start docker.service
 
 ## Configure EC2 instance VPC
   
