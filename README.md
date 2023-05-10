@@ -16,23 +16,23 @@
  
 ## Here we mainly focus on external different host scenario: AWS EC2 kakfa Docker Container
  
- Creating EC2 instance do not be described here, only talk two points here
- First, you'd better set Elastic IP which will keep your public Ip or EC2 domain stable otherwise restarting instance change IP.
- Second, to run kafka / zookeeper, you may need 1 more GB memory, t2.micro is less than 1GB, I experienced the memory lack error, 
- so choose t2.small, you get 2GB memory, here is procedure
+ Creating EC2 instance will not be described here, we only talk two points about EC2 instance:
+ First, you'd better set Elastic IP which will keeps your instance public IP stable otherwise restarting instance changes IP frequently
+ Second, runnning kafka/zookeeper in docker may need 1 more GB memory, t2.micro is less than 1GB, I experienced the memory not enough error.
+ so choose t2.small, you get 2GB memory.
 
 ## Associate your Elastic IP 
-  EC2 dashboard --> Elastice IPs-->Allocation Elastic IP address-->Amazon's pool of IPv4 address--> Allocate button
-  After allocat elastic IP
-  Directly click Instance Id (e.g i-05ba8d281c51d19c6) --> click on Public IPv4 address --> click on 'Associate Elastic IP Address'
+  Go "EC2 dashboard" -->"Elastic IPs"-->"Allocation Elastic IP address"-->check "Amazon's pool of IPv4 address"--> "Allocate" button
+  After allocat elastic IP, directly click Instance Id (e.g i-05ba8d281c51d19c6) --> click on "Public IPv4 address" --> click on 
+ "Associate Elastic IP Address"
   
 ## Select 2GB memory
-  Choose your instance-->Select 'Action' and Stop your instance-->once it is stopped, choose 'Action'-->Instance Setting-->Instance Type-->
-  In type selection drop down, scroll down select 't2.samll'-->restart the instance --> click on Associate
+  Choose your instance-->Press "Action"-- "Stop instance"-->once it is stopped, press "Action"-->"Instance Setting"-->"Instance Type"
+  -->In "type" selection drop down-->scroll down, select "t2.samll"-->restart the instance
 
 ## Install Docker 
  
- SSH Login in your EC2 instance --> run following command
+ SSH Login in your EC2 instance --> run following command in SSH terminal:
  
      sudo yum install docker
      sudo systemctl enable docker.service
@@ -42,9 +42,9 @@
   
   You need to configure your network to allow external clients to be able to reach the kafka container in EC2 instance from outside
   
-  select your instance --> click on 'Security' tab--> click your security group such as 03af811ab4da2764b --> Edit Inbound Rules-->
+  select your instance --> click on "Security" tab--> click your security group such as 03af811ab4da2764b --> "Edit Inbound Rules"-->
    
-  open kafka port number 29092 as 0.0.0.0/0 ensure extenal clients can reach --> open zookeeper 2181 just case for multi node cluster
+  open kafka port number 29092 as 0.0.0.0/0 to guarantee extenal clients reach --> open zookeeper 2181 just in case for multi node cluster
    
   <img src="images/instanace-vpc-configuration.png" width="60%" height="60%">
    
@@ -54,19 +54,19 @@
   Private Address: 172.31.24.237   
   
 ## Change Spring Boot Boostrap Server Address   
-  For example suppose your IP is 53.23.54.207 then A.B.C.D = 53.23.54.207, you use the IP address replace follow code in Constants.java
-  see "Spring boot Application"
+  Suppose your instance public IP is 53.23.54.207, here A.B.C.D be 53.23.54.207, you use this IP address replace boostrap-server in 
+  .../config/Constants.java, see "Spring boot Application".
     
 # Configure Docker Container
  
 ## volume setting
-  Bitnami Images run in user-mode, actually User_ID 1001, to persist Kafka and Zookeeper data to your host file system, you have to
+  Bitnami Image runs in user-mode, actually User_ID 1001, to persist Kafka and Zookeeper data to your host file system, you have to
   map two directories to docker containers, suppose you have two directories /zookeeper and /kafka , running following command
     sudo chown 1001.1001 /zookeeper/
     sudo chown 1001.1001 /kafka/
 
 ## zookeeper in docker-compose.yml 
-   ZOO_SERVER_ID is assigned to every node in kafka cluster, here we only use one node, it is 1
+   ZOO_SERVER_ID is assigned to every node in kafka cluster, if we only use one node, it is 1
 
 ## kafka in docker-compose.yml    
    KAFKA_BROKER_ID is the unique identifier of the Kafka instance, if you have two nodes in your cluster, first broker KAFKA_BROKER_ID=1
@@ -74,14 +74,17 @@
    KAFKA_CFG_NUM_PARTITIONS is set here to 1 by default, but in real applications you should create topics with many partitions
    
 ## kafka listner configuration     
-   Many places introduce the kafka listener , kafka advertise listener and listener protocol map, especially confluent kafka image allows to 
-   costumize the listner name, such as EXTERNAL_SAME_HOST , EXTERNAL_DIFFERENT_HOST, INTERNAL so on so forth.
-   But Bitnami Kafka container apply those listener name always throw following exception
+   Many places introduce the kafka listener , kafka advertise listener and listener protocol map, here we ommitted detail, 
+   especially it was confused with me that confluent kafka image allows to costumize any listner names, such as EXTERNAL_SAME_HOST , 
+   EXTERNAL_DIFFERENT_HOST, INTERNAL so on so forth.
+   
+   However, Bitnami Kafka container applying those meanful listener names always throw following exception:
    
          java.lang.IllegalArgumentException: requirement failed: inter.broker.listener.name must be a listener name defined 
          in advertised.listeners. The valid options based on currently configured listeners are INTERNAL,EXTERNAL_SAME_HOST
   
-   I found Bitnami default accepts those listener names:PLAINTEXT,CONTROLLER,EXTERNAL, using those names avoided above exception
+   I try many times, found Bitnami default accepts those listener names:PLAINTEXT, CONTROLLER, EXTERNAL, using those names actually 
+   avoided above inter.broker.listener.name's exception:
    
         - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
         - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:19092,EXTERNAL://0.0.0.0:29092
