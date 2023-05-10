@@ -61,14 +61,12 @@
  
 ## volume setting
   Bitnami Images run in user-mode, actually User_ID 1001, to persist Kafka and Zookeeper data to your host file system, you have to
-  map two directories to docker containers, suppose you have two directories /data/zookeeper and /data/kafka , running following command
-    sudo chown 1001.1001 /data/zookeeper/
-    sudo chown 1001.1001 /data/kafka/
+  map two directories to docker containers, suppose you have two directories /zookeeper and /kafka , running following command
+    sudo chown 1001.1001 /zookeeper/
+    sudo chown 1001.1001 /kafka/
 
 ## zookeeper in docker-compose.yml 
    ZOO_SERVER_ID is assigned to every node in kafka cluster, here we only use one node, it is 1
-   ZOO_SERVERS lists all addresses of your cluster, here is 172.31.24.237:3888, Private IP addresses are OK here, since the communication   
-   between servers is only internal. In this field you have to change IP addresses to match your configuration.
 
 ## kafka in docker-compose.yml    
    KAFKA_BROKER_ID is the unique identifier of the Kafka instance, if you have two nodes in your cluster, first broker KAFKA_BROKER_ID=1
@@ -76,18 +74,36 @@
    KAFKA_CFG_NUM_PARTITIONS is set here to 1 by default, but in real applications you should create topics with many partitions
    
 ## kafka listner configuration     
-   Many places introduce the kafka listener , kafka advertise listener and listener map, especially confluent kafka image allows to costumize
-   the listner name, such as EXTERNAL_SAME_HOST , EXTERNAL_DIFFERENT_HOST, INTERNAL so on so forth.
+   Many places introduce the kafka listener , kafka advertise listener and listener protocol map, especially confluent kafka image allows to 
+   costumize the listner name, such as EXTERNAL_SAME_HOST , EXTERNAL_DIFFERENT_HOST, INTERNAL so on so forth.
    But Bitnami Kafka container apply those listener name always throw following exception
    
          java.lang.IllegalArgumentException: requirement failed: inter.broker.listener.name must be a listener name defined 
          in advertised.listeners. The valid options based on currently configured listeners are INTERNAL,EXTERNAL_SAME_HOST
   
-   I found Bitnami only accept following listener names
+   I found Bitnami default accepts those listener names:PLAINTEXT,CONTROLLER,EXTERNAL, using those names avoided above exception
    
         - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
         - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:19092,EXTERNAL://0.0.0.0:29092
         - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-services:19092,EXTERNAL://ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092
+        
+## Run docker-compose.yml
+   Either in your EC2 SSH terminal, vi docker-dompose.yml and then copy-paste ./ec2/external-different-host-docker-compose/docker-compose.yml
+   or upload by scp -i your_keypair.pem  docker-compose.yml to EC2 instance
+   Change those A-B-C-D entire DNS name with your public IP address or dns name
+   
+        sudo /usr/local/bin/docker-compose up --remove-orphans
+        
+  in your local, ensure your install kafka and set kafka home directory in .bashrc or .bash_ptofile file
   
+     $KAFKA_HOME/bin/kafka-topics.sh --create --bootstrap-server ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092 --replication-factor 1 —
+     partitions 1 --topic my-test-topic
+
+
+## Create Topic before runng spring boot  
+  Although KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true and in Spring boot bean create topic as well, somehow confleunt or bitnami, they cause
+  Spring boot application waiting for create topic forever
   
- 
+# Result
+  <img src="images/comsuer-listen-aws-ec2.png" width="100%" height="100%">
+  
