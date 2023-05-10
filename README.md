@@ -46,7 +46,7 @@
    
   open kafka port number 29092 as 0.0.0.0/0 to guarantee extenal clients reach --> open zookeeper 2181 just in case for multi node cluster
    
-  <img src="images/instanace-vpc-configuration.png" width="60%" height="60%">
+  <img src="images/instanace-vpc-configuration.png" width="90%" height="90%">
    
 ## EC2 Node Address and Setting in Spring Boot Code
 	  Public IPv4 A.B.C.D 
