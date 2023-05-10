@@ -62,7 +62,7 @@
   
   [external-same-host-docker-compose/](https://github.com/johnzhang320/spring-boot-from-outside-access-kafka-docker-contaner/blob/main/external-same-host-docker-compose/docker-compose.yml)
   
-  [external-different-host-docker-compose/] (https://github.com/johnzhang320/spring-boot-from-outside-access-kafka-docker-contaner/blob/main/ec2-external-different-host-docker-compose/docker-compose.yml)
+  [external-different-host-docker-compose/](https://github.com/johnzhang320/spring-boot-from-outside-access-kafka-docker-contaner/blob/main/ec2-external-different-host-docker-compose/docker-compose.yml)
   
   
   
