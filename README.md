@@ -49,9 +49,9 @@
   <img src="images/instanace-vpc-configuration.png" width="60%" height="60%">
    
 ## EC2 Node Address and Setting in Spring Boot Code
-  Public IPv4 A.B.C.D 
-  Public Node Address A.B.C.D:29092
-  Private Address: 172.31.24.237   
+	  Public IPv4 A.B.C.D 
+	  Public Node Address A.B.C.D:29092
+	  Private Address: 172.31.24.237 (for example, you change to your own private IP here , which is useful multi brokers cluster)  
   
 ## Change Spring Boot Boostrap Server Address   
   Suppose your instance public IP is 53.23.54.207, here A.B.C.D be 53.23.54.207, you use this IP address replace boostrap-server in 
