@@ -62,6 +62,10 @@
   
   [external-same-host-docker-compose/](https://github.com/johnzhang320/spring-boot-from-outside-access-kafka-docker-contaner/blob/main/external-same-host-docker-compose/docker-compose.yml)
   
+  [external-different-host-docker-compose/] (https://github.com/johnzhang320/spring-boot-from-outside-access-kafka-docker-contaner/blob/main/ec2-external-different-host-docker-compose/docker-compose.yml)
+  
+  
+  
 ## volume setting
   Bitnami Image runs in user-mode, actually User_ID 1001, to persist Kafka and Zookeeper data to your host file system, you have to
   map two directories to docker containers, suppose you have two directories /zookeeper and /kafka , running following command
