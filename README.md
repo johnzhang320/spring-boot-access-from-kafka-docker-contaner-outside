@@ -58,8 +58,10 @@
   .../config/Constants.java, see "Spring boot Application".
     
 # Configure Docker Container
-  Two scenarios, docker-compose.yml located
+  Two scenarios, docker-compose.yml shows on links:
+  
   [external-same-host-docker-compose/](https://github.com/johnzhang320/spring-boot-from-outside-access-kafka-docker-contaner/blob/main/external-same-host-docker-compose/docker-compose.yml)
+  
 ## volume setting
   Bitnami Image runs in user-mode, actually User_ID 1001, to persist Kafka and Zookeeper data to your host file system, you have to
   map two directories to docker containers, suppose you have two directories /zookeeper and /kafka , running following command
