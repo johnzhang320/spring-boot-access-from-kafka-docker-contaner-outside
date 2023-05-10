@@ -100,11 +100,12 @@
 
      $KAFKA_HOME/bin/kafka-topics.sh --create --bootstrap-server ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092 --replication-factor 1 —
      partitions 1 --topic OrderTopic
-
+     
+ Create this topic is also testing to reach EC2 Kafka Container
   
 # Spring boot Application  
 
-  Running in local Intellij and set Bootstrap-server in Constants.java
+  Running in local Intellij and set Bootstrap-server in config/Constants.java
   
         public interface Constants {
             public static final String TOPIC_NAME="OrderTopic";
@@ -115,6 +116,25 @@
             public final String BOOTSTRAP_NAME="ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092";
 
        }
+# Running Spring boot application in PostMan
+ After reaching EC2 to create Topic and changing boostrap-server in Constants.java, start Application.java in Intellij
+ ensure no issue, go to PostMan, set POST and copy below URL to 'address' and data to 'request body'. running kafka 
+ producer and consumer event driven code
+ 
+        POST
+
+        http://localhost:8096/api/v1/kafka/publish
+
+	      {
+           "itemName":"Philly Red Steak",
+           "quantity": 6,
+           "deliveryDriverName":"Bryan Hart",
+           "deliveryAddress": "1st Street suite 2213, San Jose,CA",
+           "customerName": "Harris Tarden",
+           "arriveInMinutes": 30,
+           "price":68.5
+       }
+       
 # Result
   <img src="images/comsuer-listen-aws-ec2.png" width="100%" height="100%">
   
