@@ -11,8 +11,10 @@
  <img src="images/external-different-host-ec2-server.png" width="60%" height="60%">
 
 # EC2 Docker Install and Kafka Docker Compose
- Ommit Install docker and create kafka / zookeeper , you can find the docker compose in repository
- Focus on EC2 Docker install first
+ We ommitted install docker and create kafka/zookeeper container in external same host, you can use the docker-compose.yml to test
+ 
+## Here we mainly focus on external different host scenario: AWS EC2 kakfa Docker Container
+ 
  Creating EC2 instance do not be described here, only talk two points here
  First, you'd better set Elastic IP which will keep your public Ip or EC2 domain stable otherwise restarting instance change IP.
  Second, to run kafka / zookeeper, you may need 1 more GB memory, t2.micro is less than 1GB, I experienced the memory lack error, 
