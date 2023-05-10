@@ -54,11 +54,11 @@
 	  Private Address: 172.31.24.237 (for example, you change to your own private IP here , which is useful multi brokers cluster)  
   
 ## Change Spring Boot Boostrap Server Address   
-  Suppose your instance public IP is 53.23.54.207, here A.B.C.D be 53.23.54.207, you use this IP address replace boostrap-server in 
-  .../config/Constants.java, see "Spring boot Application".
+  Suppose your instance public IP is 53.23.54.207, here A.B.C.D should be 53.23.54.207, you need to use this IP address replace "BOOSTRAP_
+  SERVER" variable in ..../config/Constants.java, see "Spring boot Application".
     
 # Configure Docker Container
-  Two scenarios, docker-compose.yml shows on links:
+ For two scenarios, I created two docker-compose.yml which shows on below links:
   
   [external-same-host-docker-compose/](https://github.com/johnzhang320/spring-boot-from-outside-access-kafka-docker-contaner/blob/main/external-same-host-docker-compose/docker-compose.yml)
   
