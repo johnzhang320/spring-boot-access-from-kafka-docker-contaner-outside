@@ -45,18 +45,49 @@
    
   <img src="images/instanace-vpc-configuration.png" width="60%" height="60%">
    
-## EC2 Node Address
-  Public IPv4 A.B.C.D (for example your ip is 53.23.54.207 then A.B.C.D = 53.23.54.207, you must replace A.B.C.D of Constants.java)
-  For example your ip is 53.23.54.207 then A.B.C.D = 53.23.54.207, you must replace A.B.C.D in Constants.java:
-  
+## EC2 Node Address and Setting in Spring Boot Code
+  Public IPv4 A.B.C.D 
   Public Node Address A.B.C.D:29092
   Private Address: 172.31.24.237   
+  
+## Change Spring Boot Boostrap Server Address   
+  For example suppose your IP is 53.23.54.207 then A.B.C.D = 53.23.54.207, you use the IP address replace follow code in  Constants.java:
+      public interface Constants {        .....
+        //public final String BOOTSTRAP_NAME="ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092"; replaced by following 
+         public final String BOOTSTRAP_NAME="53.23.54.207:29092";
+      }
 
 # Configure Docker Container
-
-  
-  
-  
  
+## volume setting
+  Bitnami Images run in user-mode, actually User_ID 1001, to persist Kafka and Zookeeper data to your host file system, you have to
+  map two directories to docker containers, suppose you have two directories /data/zookeeper and /data/kafka , running following command
+    sudo chown 1001.1001 /data/zookeeper/
+    sudo chown 1001.1001 /data/kafka/
+
+## zookeeper in docker-compose.yml 
+   ZOO_SERVER_ID is assigned to every node in kafka cluster, here we only use one node, it is 1
+   ZOO_SERVERS lists all addresses of your cluster, here is 172.31.24.237:3888, Private IP addresses are OK here, since the communication   
+   between servers is only internal. In this field you have to change IP addresses to match your configuration.
+
+## kafka in docker-compose.yml    
+   KAFKA_BROKER_ID is the unique identifier of the Kafka instance, if you have two nodes in your cluster, first broker KAFKA_BROKER_ID=1
+   second one KAFKA_BROKER_ID=2
+   KAFKA_CFG_NUM_PARTITIONS is set here to 1 by default, but in real applications you should create topics with many partitions
+   
+## kafka listner configuration     
+   Many places introduce the kafka listener , kafka advertise listener and listener map, especially confluent kafka image allows to costumize
+   the listner name, such as EXTERNAL_SAME_HOST , EXTERNAL_DIFFERENT_HOST, INTERNAL so on so forth.
+   But Bitnami Kafka container apply those listener name always throw following exception
+   
+         java.lang.IllegalArgumentException: requirement failed: inter.broker.listener.name must be a listener name defined 
+         in advertised.listeners. The valid options based on currently configured listeners are INTERNAL,EXTERNAL_SAME_HOST
+  
+   I found Bitnami only accept following listener names
+   
+        - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+        - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:19092,EXTERNAL://0.0.0.0:29092
+        - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-services:19092,EXTERNAL://ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092
+  
   
  
