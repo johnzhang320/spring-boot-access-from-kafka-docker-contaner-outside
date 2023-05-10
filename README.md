@@ -11,7 +11,8 @@
  <img src="images/external-different-host-ec2-server.png" width="60%" height="60%">
 
 # EC2 Docker Install and Kafka Docker Compose
- We ommitted install docker and create kafka/zookeeper container in external same host, you can use the docker-compose.yml to test
+ We ommitted install docker and create kafka/zookeeper container in external same host, you can use the docker-compose.yml to test 
+ this scenario in your local machine.
  
 ## Here we mainly focus on external different host scenario: AWS EC2 kakfa Docker Container
  
