@@ -13,13 +13,19 @@
 # EC2 Docker Install and Kafka Docker Compose
  Ommit Install docker and create kafka / zookeeper , you can find the docker compose in repository
  Focus on EC2 Docker install first
- Setup EC2 instance do not be described here, only talk two points here
- First, you'd better set Elastic IP which will keep your public Ip or EC2 domain stable
+ Creating EC2 instance do not be described here, only talk two points here
+ First, you'd better set Elastic IP which will keep your public Ip or EC2 domain stable otherwise restarting instance change IP.
  Second, to run kafka / zookeeper, you may need 1 more GB memory, t2.micro is less than 1GB, I experienced the memory lack error, 
  so choose t2.small, you get 2GB memory, here is procedure
+
+## Associate your Elastic IP 
+  EC2 dashboard --> Elastice IPs-->Allocation Elastic IP address-->Amazon's pool of IPv4 address--> Allocate button
+  After allocat elastic IP
+  Directly click Instance Id (e.g i-05ba8d281c51d19c6) --> click on Public IPv4 address --> click on 'Associate Elastic IP Address'
+  
 ## Select 2GB memory
- Choose your instance-->Select 'Action' and Stop your instance-->once it is stopped, choose 'Action'-->Instance Setting-->Instance Type-->
- In type selection drop down, scroll down select 't2.samll'-->restart the instance
+  Choose your instance-->Select 'Action' and Stop your instance-->once it is stopped, choose 'Action'-->Instance Setting-->Instance Type-->
+  In type selection drop down, scroll down select 't2.samll'-->restart the instance --> click on Associate
 
 ## Install Docker 
  
@@ -28,19 +34,27 @@
      sudo yum install docker
      sudo systemctl enable docker.service
      sudo systemctl start docker.service
-     
-     
 
 ## Configure EC2 instance VPC
   
-   You need to configure your network to allow external clients to be able to reach the kafka container in EC2 instance from outside
+  You need to configure your network to allow external clients to be able to reach the kafka container in EC2 instance from outside
   
-   select your instance --> click on 'Security' tab--> click your security group such as 03af811ab4da2764b --> Edit Inbound Rules-->
+  select your instance --> click on 'Security' tab--> click your security group such as 03af811ab4da2764b --> Edit Inbound Rules-->
    
-   open kafka port number 29092 as 0.0.0.0/0 ensure extenal clients can reach --> open zookeeper 2181 just case for multi node cluster
+  open kafka port number 29092 as 0.0.0.0/0 ensure extenal clients can reach --> open zookeeper 2181 just case for multi node cluster
    
-
   <img src="images/instanace-vpc-configuration.png" width="60%" height="60%">
+   
+## EC2 Node Address
+  Public IPv4 A.B.C.D (for example your ip is 53.23.54.207 then A.B.C.D = 53.23.54.207, you must replace A.B.C.D of Constants.java)
+  For example your ip is 53.23.54.207 then A.B.C.D = 53.23.54.207, you must replace A.B.C.D in Constants.java:
+  
+  Public Node Address A.B.C.D:29092
+  Private Address: 172.31.24.237   
+
+# Configure Docker Container
+
+  
   
   
  
