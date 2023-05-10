@@ -91,16 +91,16 @@
    
         sudo /usr/local/bin/docker-compose up --remove-orphans
         
-  in your local, ensure your install kafka and set kafka home directory in .bashrc or .bash_ptofile file
-  
-     $KAFKA_HOME/bin/kafka-topics.sh --create --bootstrap-server ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092 --replication-factor 1 —
-     partitions 1 --topic my-test-topic
-
 
 ## Create Topic before runng spring boot  
   Although KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true and in Spring boot bean create topic as well, somehow confleunt or bitnami, they cause
   Spring boot application waiting for create topic forever
   
+  in your local, ensure your install kafka and set kafka home directory in .bashrc or .bash_ptofile file
+
+     $KAFKA_HOME/bin/kafka-topics.sh --create --bootstrap-server ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092 --replication-factor 1 —
+     partitions 1 --topic OrderTopic
+
   
 # Spring boot Application  
 
