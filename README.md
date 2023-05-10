@@ -51,12 +51,9 @@
   Private Address: 172.31.24.237   
   
 ## Change Spring Boot Boostrap Server Address   
-  For example suppose your IP is 53.23.54.207 then A.B.C.D = 53.23.54.207, you use the IP address replace follow code in  Constants.java:
-      public interface Constants {        .....
-        //public final String BOOTSTRAP_NAME="ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092"; replaced by following 
-         public final String BOOTSTRAP_NAME="53.23.54.207:29092";
-      }
-
+  For example suppose your IP is 53.23.54.207 then A.B.C.D = 53.23.54.207, you use the IP address replace follow code in Constants.java
+  see "Spring boot Application"
+    
 # Configure Docker Container
  
 ## volume setting
@@ -111,7 +108,6 @@
   
         public interface Constants {
             public static final String TOPIC_NAME="OrderTopic";
-
             public final String GROUP_ID_CONFIG="myGroup";
             // run kafka container in local remove comment
             // public final String BOOTSTRAP_NAME="localhost:29092";  
