@@ -104,6 +104,20 @@
   Although KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true and in Spring boot bean create topic as well, somehow confleunt or bitnami, they cause
   Spring boot application waiting for create topic forever
   
+  
+# Spring boot Application  
+
+  Running in local Intellij and set Bootstrap-server in Constants.java
+      public interface Constants {
+        public static final String TOPIC_NAME="OrderTopic";
+
+        public final String GROUP_ID_CONFIG="myGroup";
+        // run kafka container in local remove comment
+        // public final String BOOTSTRAP_NAME="localhost:29092";  
+        // run kafka container in EC2 replace below DNS as your EC2 instance DNS
+        public final String BOOTSTRAP_NAME="ec2-A-B-C-D.us-west-2.compute.amazonaws.com:29092";
+
+    }
 # Result
   <img src="images/comsuer-listen-aws-ec2.png" width="100%" height="100%">
   
