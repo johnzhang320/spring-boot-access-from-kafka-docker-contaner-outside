@@ -103,7 +103,8 @@
    Change those A-B-C-D entire DNS name with your public IP address or dns name
    
         sudo /usr/local/bin/docker-compose up --remove-orphans
-        
+	
+   <img src="images/aws-ec2-kafka-zookeeper-started.png" width="100%" height="120%">     
 
 ## Create Topic before runng spring boot  
   Although KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true and in Spring boot bean create topic as well, somehow confleunt or bitnami, they cause
