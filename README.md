@@ -1,5 +1,5 @@
  
-# Spring boot external connect AWS EC2 Kafka docker container
+# Spring boot connects AWS EC2 Kafka docker container
 
 # Key Points
  1. Introduce external same host and external different host ways for spring boot application connect to kafka container
