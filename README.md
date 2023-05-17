@@ -6,6 +6,16 @@
  2. External same host: e.g. in local machine, spring boot from outside of docker to connect kafka/zookeeper docker container
  3. External different host: we create AWS EC2 kafka/Zookeeper docker container, spring boot from my local machint to connect
  4. I choose bitnami kafka and zookeeper image because the sizes are small enough to run in EC2 t2.small (t2.micro is not enough)
+ 
+## Related Links
+ 
+  [spring-boot kafka json stream/](https://johnzhang320.com/spring-boot-kafka-json-stream)
+  
+  [Spring-boot kafka event driven/](https://johnzhang320.com/spring-boot-kafka-event-driven)
+ 
+  [Spring-boot kafka stream sorted unique word count/](https://johnzhang320.com/sorted-unique-word-count/)
+
+
 # Work flow chart
  <img src="images/external-same-host.png" width="60%" height="60%">
  <img src="images/external-different-host-ec2-server.png" width="60%" height="60%">
